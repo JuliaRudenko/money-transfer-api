@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 abstract class BaseH2Repository<T> {
@@ -18,28 +19,26 @@ abstract class BaseH2Repository<T> {
     private static final String DB_USER = "";
     private static final String DB_PASSWORD = "";
 
-    BaseH2Repository() {
-    }
-
     abstract String getTableName();
 
     abstract List<T> mapResultSetToList(ResultSet resultSet) throws SQLException;
 
     abstract T mapResultSetToObject(ResultSet resultSet) throws SQLException;
 
+    abstract String getInsertQuery();
+
+    abstract void fillInsertPreparedStatement(PreparedStatement ps, T entity) throws SQLException;
+
+    abstract String getUpdateQuery(T entity);
+
+    abstract void fillUpdatePreparedStatement(PreparedStatement ps, T entity) throws SQLException;
+
     List<T> findAll() throws SQLException {
-        PreparedStatement selectPreparedStatement;
-        String selectQuery = "select * from " + getTableName();
-
-        try (Connection connection = getDBConnection()) {
-            connection.setAutoCommit(false);
-
-            selectPreparedStatement = connection.prepareStatement(selectQuery);
-            ResultSet rs = selectPreparedStatement.executeQuery();
-            List<T> list = mapResultSetToList(rs);
-            selectPreparedStatement.close();
-            connection.commit();
-            return list;
+        try (Connection connection = getDBConnection();
+             PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + getTableName());
+        ) {
+            ResultSet rs = ps.executeQuery();
+            return mapResultSetToList(rs);
         } catch (SQLException e) {
             LOG.warn("Can't select all objects from H2 db! ", e.getMessage());
             throw e;
@@ -47,21 +46,58 @@ abstract class BaseH2Repository<T> {
     }
 
     T findById(Long id) throws SQLException {
-        PreparedStatement selectPreparedStatement;
-        String selectQuery = "select * from " + getTableName() + " where id = ?";
-
-        try (Connection connection = getDBConnection()) {
-            connection.setAutoCommit(false);
-
-            selectPreparedStatement = connection.prepareStatement(selectQuery);
-            selectPreparedStatement.setLong(1, id);
-            ResultSet rs = selectPreparedStatement.executeQuery();
-            T row = mapResultSetToObject(rs);
-            selectPreparedStatement.close();
-            connection.commit();
-            return row;
+        try (Connection connection = getDBConnection();
+             PreparedStatement ps = connection.prepareStatement(
+                     "SELECT * FROM " + getTableName() + " WHERE id = ?");
+        ) {
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+            return mapResultSetToObject(rs);
         } catch (SQLException e) {
             LOG.warn("Can't select object by id from H2 db! ", e.getMessage());
+            throw e;
+        }
+    }
+
+    Long create(T entity) throws SQLException {
+        try (Connection conn = getDBConnection();
+             PreparedStatement ps = conn.prepareStatement(getInsertQuery(), Statement.RETURN_GENERATED_KEYS)
+        ) {
+            fillInsertPreparedStatement(ps, entity);
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows > 0) {
+                ResultSet rs = ps.getGeneratedKeys();
+                if (rs.next()) {
+                    return rs.getLong(1);
+                }
+            }
+        } catch (SQLException e) {
+            LOG.warn("Can't create object in H2 db! ", e.getMessage());
+            throw e;
+        }
+        return 0L;
+    }
+
+    void update(T entity) throws SQLException {
+        try (Connection conn = getDBConnection();
+             PreparedStatement ps = conn.prepareStatement(getUpdateQuery(entity))
+        ) {
+            fillUpdatePreparedStatement(ps, entity);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            LOG.warn("Can't update object in H2 db! ", e.getMessage());
+            throw e;
+        }
+    }
+
+    void delete(Long id) throws SQLException {
+        try (Connection conn = getDBConnection();
+             PreparedStatement ps = conn.prepareStatement("DELETE FROM " + getTableName() + " WHERE id = ?")
+        ) {
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            LOG.warn("Can't delete object in H2 db! ", e.getMessage());
             throw e;
         }
     }
@@ -81,16 +117,11 @@ abstract class BaseH2Repository<T> {
     }
 
     void fillDbWithData() throws SQLException {
-        PreparedStatement selectPreparedStatement;
-        try (Connection connection = getDBConnection()) {
-            connection.setAutoCommit(false);
-
-            selectPreparedStatement = connection.prepareStatement(
-                    "RUNSCRIPT FROM 'classpath:db-scripts/createAndFillTables.sql'");
-            selectPreparedStatement.executeUpdate();
-
-            selectPreparedStatement.close();
-            connection.commit();
+        try (Connection connection = getDBConnection();
+             PreparedStatement ps = connection.prepareStatement(
+                     "RUNSCRIPT FROM 'classpath:db-scripts/createAndFillTables.sql'");
+        ) {
+            ps.executeUpdate();
         } catch (SQLException e) {
             LOG.warn("Can't fill H2 db with data! ", e.getMessage());
             throw e;

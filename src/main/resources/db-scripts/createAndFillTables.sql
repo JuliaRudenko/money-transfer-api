@@ -1,27 +1,27 @@
 
 CREATE TABLE IF NOT EXISTS user(
-  id BIGINT primary key,
+  id BIGINT AUTO_INCREMENT primary key,
   userName VARCHAR(255),
   email VARCHAR(255),
-  createdAt TIMESTAMP
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS account(
-  id BIGINT primary key,
+  id BIGINT AUTO_INCREMENT primary key,
   userId BIGINT,
   balance DECIMAL,
   currency VARCHAR(30),
-  createdAt TIMESTAMP,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   foreign key (userId) references user(id)
 );
 
 CREATE TABLE IF NOT EXISTS transfer(
-  id BIGINT primary key,
+  id BIGINT AUTO_INCREMENT primary key,
   sourceAccountId BIGINT,
   destinationAccountId BIGINT,
   sum DECIMAL,
   currency VARCHAR(30),
-  createdAt TIMESTAMP,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   status VARCHAR(30),
   foreign key (sourceAccountId) references account(id),
   foreign key (destinationAccountId) references account(id)
