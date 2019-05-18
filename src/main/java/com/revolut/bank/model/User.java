@@ -8,6 +8,13 @@ public class User {
     private String email;
     private Date createdAt;
 
+    public User(Long id, String userName, String email, Date createdAt) {
+        this.id = id;
+        this.userName = userName;
+        this.email = email;
+        this.createdAt = createdAt;
+    }
+
     public Long getId() {
         return id;
     }
