@@ -1,15 +1,22 @@
 package com.revolut.bank.model;
 
 import java.math.BigDecimal;
-import java.util.Currency;
 import java.util.Date;
 
 public class Account {
     private Long id;
     private Long userId;
     private BigDecimal balance;
-    private Currency currency;
+    private String currency;
     private Date createdAt;
+
+    public Account(Long id, Long userId, BigDecimal balance, String currency, Date createdAt) {
+        this.id = id;
+        this.userId = userId;
+        this.balance = balance;
+        this.currency = currency;
+        this.createdAt = createdAt;
+    }
 
     public Long getId() {
         return id;
@@ -35,11 +42,11 @@ public class Account {
         this.balance = balance;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 

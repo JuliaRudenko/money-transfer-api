@@ -4,26 +4,15 @@ import com.google.gson.JsonElement;
 
 public class StandardResponse {
 
-    private StatusResponse status;
     private String message;
     private JsonElement data;
 
-    StandardResponse(StatusResponse status, String message) {
-        this.status = status;
+    StandardResponse(String message) {
         this.message = message;
     }
 
-    StandardResponse(StatusResponse status, JsonElement data) {
-        this.status = status;
+    StandardResponse(JsonElement data) {
         this.data = data;
-    }
-
-    public StatusResponse getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusResponse status) {
-        this.status = status;
     }
 
     public String getMessage() {
