@@ -10,6 +10,20 @@ public class Account {
     private String currency;
     private Date createdAt;
 
+    public Account() {
+    }
+
+    public Account(BigDecimal balance, String currency) {
+        this.balance = balance;
+        this.currency = currency;
+    }
+
+    public Account(Long userId, BigDecimal balance, String currency) {
+        this.userId = userId;
+        this.balance = balance;
+        this.currency = currency;
+    }
+
     public Account(Long id, Long userId, BigDecimal balance, String currency, Date createdAt) {
         this.id = id;
         this.userId = userId;

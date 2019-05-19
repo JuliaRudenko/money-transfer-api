@@ -9,10 +9,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserRespository extends BaseH2Repository<User> {
+public class UserRepository extends BaseH2Repository<User> {
 
     // filling whole db data here only once
-    public UserRespository() throws SQLException {
+    public UserRepository() throws SQLException {
         fillDbWithData();
     }
 

@@ -14,10 +14,6 @@ public class AccountService {
         this.accountRepository = new AccountRepository();
     }
 
-    public AccountService(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
-    }
-
     public List<Account> findAllAccounts() throws SQLException {
         return accountRepository.findAllAccounts();
     }

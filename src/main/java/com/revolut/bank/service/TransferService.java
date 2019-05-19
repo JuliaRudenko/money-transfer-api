@@ -14,10 +14,6 @@ public class TransferService {
         this.transferRepository = new TransferRepository();
     }
 
-    public TransferService(TransferRepository transferRepository) {
-        this.transferRepository = transferRepository;
-    }
-
     public List<Transfer> findAllTransfers() throws SQLException {
         return transferRepository.findAllTransfers();
     }

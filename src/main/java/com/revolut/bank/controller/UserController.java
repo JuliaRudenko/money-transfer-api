@@ -21,10 +21,6 @@ public class UserController {
         this.userService = new UserService();
     }
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
     public Route findAllUsers() {
         return (request, response) -> {
             response.type("application/json");

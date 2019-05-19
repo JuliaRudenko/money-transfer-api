@@ -20,10 +20,6 @@ public class AccountController {
         this.accountService = new AccountService();
     }
 
-    public AccountController(AccountService accountService) {
-        this.accountService = accountService;
-    }
-
     public Route findAllAccounts() {
         return (request, response) -> {
             response.type("application/json");

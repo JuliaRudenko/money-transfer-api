@@ -8,6 +8,20 @@ public class User {
     private String email;
     private Date createdAt;
 
+    public User() {
+    }
+
+    public User(String userName, String email) {
+        this.userName = userName;
+        this.email = email;
+    }
+
+    public User(Long id, String userName, String email) {
+        this.id = id;
+        this.userName = userName;
+        this.email = email;
+    }
+
     public User(Long id, String userName, String email, Date createdAt) {
         this.id = id;
         this.userName = userName;

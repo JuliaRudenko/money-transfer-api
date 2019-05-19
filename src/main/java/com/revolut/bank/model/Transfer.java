@@ -11,6 +11,16 @@ public class Transfer {
     private String currency;
     private Date createdAt;
 
+    public Transfer() {
+    }
+
+    public Transfer(Long sourceAccountId, Long destinationAccountId, BigDecimal sum, String currency) {
+        this.sourceAccountId = sourceAccountId;
+        this.destinationAccountId = destinationAccountId;
+        this.sum = sum;
+        this.currency = currency;
+    }
+
     public Transfer(Long id, Long sourceAccountId, Long destinationAccountId,
                     BigDecimal sum, String currency, Date createdAt) {
         this.id = id;

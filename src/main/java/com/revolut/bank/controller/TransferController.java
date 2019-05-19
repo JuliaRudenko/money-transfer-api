@@ -23,10 +23,6 @@ public class TransferController {
         this.transferService = new TransferService();
     }
 
-    public TransferController(TransferService transferService) {
-        this.transferService = transferService;
-    }
-
     public Route findAllTransfers() {
         return (request, response) -> {
             response.type("application/json");
