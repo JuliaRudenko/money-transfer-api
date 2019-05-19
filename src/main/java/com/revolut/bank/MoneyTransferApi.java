@@ -17,26 +17,26 @@ public class MoneyTransferApi {
         AccountController accountController = new AccountController();
         TransferController transferController = new TransferController();
 
-        get("/users", userController.findAllUsers());
-        get("/users/:id", userController.findUserById());
-        post("/users", userController.createUser());
+        get("/money-transfer/users", userController.findAllUsers());
+        get("/money-transfer/users/:id", userController.findUserById());
+        post("/money-transfer/users", userController.createUser());
         // update userName and/or email only!
-        put("/users", userController.updateUser());
-        delete("/users/:id", userController.deleteUser());
+        put("/money-transfer/users", userController.updateUser());
+        delete("/money-transfer/users/:id", userController.deleteUser());
 
-        get("/accounts", accountController.findAllAccounts());
-        get("/accounts/:id", accountController.findAccountById());
-        post("/accounts", accountController.createAccount());
+        get("/money-transfer/accounts", accountController.findAllAccounts());
+        get("/money-transfer/accounts/:id", accountController.findAccountById());
+        post("/money-transfer/accounts", accountController.createAccount());
         // update currency and/or balance only!
-        put("/accounts", accountController.updateAccount());
-        delete("/accounts/:id", accountController.deleteAccount());
+        put("/money-transfer/accounts", accountController.updateAccount());
+        delete("/money-transfer/accounts/:id", accountController.deleteAccount());
 
-        get("/transfers", transferController.findAllTransfers());
-        get("/transfers/:id", transferController.findTransferById());
+        get("/money-transfer/transfers", transferController.findAllTransfers());
+        get("/money-transfer/transfers/:id", transferController.findTransferById());
         // Transfer money from source Account to destination Account
-        post("/transfers", transferController.createTransfer());
+        post("/money-transfer/transfers", transferController.createTransfer());
         // update currency and/or sum only!
-        put("/transfers", transferController.updateTransfer());
-        delete("/transfers/:id", transferController.deleteTransfer());
+        put("/money-transfer/transfers", transferController.updateTransfer());
+        delete("/money-transfer/transfers/:id", transferController.deleteTransfer());
     }
 }

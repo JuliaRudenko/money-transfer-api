@@ -116,7 +116,7 @@ abstract class BaseH2Repository<T> {
         }
     }
 
-    void fillDbWithData() throws SQLException {
+    public void fillDbWithData() throws SQLException {
         try (Connection connection = getDBConnection();
              PreparedStatement ps = connection.prepareStatement(
                      "RUNSCRIPT FROM 'classpath:db-scripts/createAndFillTables.sql'");
