@@ -102,7 +102,7 @@ abstract class BaseH2Repository<T> {
         }
     }
 
-    private Connection getDBConnection() throws SQLException {
+    Connection getDBConnection() throws SQLException {
         try {
             Class.forName(DB_DRIVER);
         } catch (ClassNotFoundException e) {

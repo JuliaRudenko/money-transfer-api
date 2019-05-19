@@ -22,7 +22,6 @@ CREATE TABLE IF NOT EXISTS transfer(
   sum DECIMAL,
   currency VARCHAR(30),
   createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  status VARCHAR(30),
   foreign key (sourceAccountId) references account(id),
   foreign key (destinationAccountId) references account(id)
 );
@@ -34,5 +33,5 @@ INSERT INTO user(id, userName, email, createdAt) VALUES (2, 'John Snow', 'john@g
 INSERT INTO account(id, userId, balance, currency, createdAt) VALUES (1, 1, 100, 'UAH', '2019-05-17 17:00:00');
 INSERT INTO account(id, userId, balance, currency, createdAt) VALUES (2, 2, 200, 'UAH', '2019-05-07 07:00:00');
 
-INSERT INTO transfer(id, sourceAccountId, destinationAccountId, sum, currency, createdAt, status)
-VALUES (1, 1, 2, 100, 'UAH', '2019-05-17 17:00:00', 'EXECUTED');
+INSERT INTO transfer(id, sourceAccountId, destinationAccountId, sum, currency, createdAt)
+VALUES (1, 1, 2, 100, 'UAH', '2019-05-17 17:00:00');

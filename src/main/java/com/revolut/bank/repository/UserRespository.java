@@ -53,21 +53,6 @@ public class UserRespository extends BaseH2Repository<User> {
     }
 
     @Override
-    void fillUpdatePreparedStatement(PreparedStatement ps, User user) throws SQLException {
-        if (user.getUserName() != null && user.getEmail() != null) {
-            ps.setString(1, user.getUserName());
-            ps.setString(2, user.getEmail());
-            ps.setLong(3, user.getId());
-        } else if (user.getUserName() != null) {
-            ps.setString(1, user.getUserName());
-            ps.setLong(2, user.getId());
-        } else if (user.getEmail() != null) {
-            ps.setString(1, user.getEmail());
-            ps.setLong(2, user.getId());
-        }
-    }
-
-    @Override
     String getUpdateQuery(User user) {
         String baseQuery = "UPDATE user SET";
         if (user.getUserName() != null && user.getEmail() != null) {
@@ -81,6 +66,21 @@ public class UserRespository extends BaseH2Repository<User> {
         }
         baseQuery += "WHERE id = ?";
         return baseQuery;
+    }
+
+    @Override
+    void fillUpdatePreparedStatement(PreparedStatement ps, User user) throws SQLException {
+        if (user.getUserName() != null && user.getEmail() != null) {
+            ps.setString(1, user.getUserName());
+            ps.setString(2, user.getEmail());
+            ps.setLong(3, user.getId());
+        } else if (user.getUserName() != null) {
+            ps.setString(1, user.getUserName());
+            ps.setLong(2, user.getId());
+        } else if (user.getEmail() != null) {
+            ps.setString(1, user.getEmail());
+            ps.setLong(2, user.getId());
+        }
     }
 
     public List<User> findAllUsers() throws SQLException {

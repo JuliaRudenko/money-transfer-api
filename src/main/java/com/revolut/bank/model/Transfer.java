@@ -1,7 +1,6 @@
 package com.revolut.bank.model;
 
 import java.math.BigDecimal;
-import java.util.Currency;
 import java.util.Date;
 
 public class Transfer {
@@ -9,9 +8,18 @@ public class Transfer {
     private Long sourceAccountId;
     private Long destinationAccountId;
     private BigDecimal sum;
-    private Currency currency;
+    private String currency;
     private Date createdAt;
-    private Status status;
+
+    public Transfer(Long id, Long sourceAccountId, Long destinationAccountId,
+                    BigDecimal sum, String currency, Date createdAt) {
+        this.id = id;
+        this.sourceAccountId = sourceAccountId;
+        this.destinationAccountId = destinationAccountId;
+        this.sum = sum;
+        this.currency = currency;
+        this.createdAt = createdAt;
+    }
 
     public Long getId() {
         return id;
@@ -45,11 +53,11 @@ public class Transfer {
         this.sum = sum;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 
@@ -59,14 +67,6 @@ public class Transfer {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
     }
 
     @Override
@@ -93,7 +93,6 @@ public class Transfer {
                 ", sum=" + sum +
                 ", currency=" + currency +
                 ", createdAt=" + createdAt +
-                ", status=" + status +
                 '}';
     }
 }
